@@ -77,3 +77,7 @@ details{margin:10px 0}summary{cursor:pointer;font-weight:600;padding:6px 0}
 .pron{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.pron .en{font-size:16px}
 .tpl li{margin:6px 0}
 input[type=range]{width:160px;vertical-align:middle}
+h4.part{margin:16px 0 6px;font-size:16px}
+details.task{border:1px solid var(--line);border-radius:10px;padding:4px 10px;margin:6px 0}
+details.task p{margin:6px 0}
+.tag2{background:var(--pri2);color:var(--pri);border-radius:6px;padding:2px 6px;font-weight:600}

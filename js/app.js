@@ -324,12 +324,12 @@
 
   // ----- PTE menu -----
   const TASKS = [
-    { k: 'ra', icon: '📖', t: 'Read Aloud', mn: 'Текстийг чангаар унших', w: 'Speaking + Reading', time: 'Бэлтгэл 30с · Ярих 40с' },
+    { k: 'ra', icon: '📖', t: 'Read Aloud', mn: 'Текстийг чангаар унших', w: 'Speaking', time: 'Бэлтгэл 30–40с · Ярих 40с' },
     { k: 'rs', icon: '🔁', t: 'Repeat Sentence', mn: 'Сонссон өгүүлбэрээ давтах', w: 'Speaking + Listening ⭐', time: 'Ярих 15с' },
     { k: 'di', icon: '📊', t: 'Describe Image', mn: 'Зураг, график тайлбарлах', w: 'Speaking', time: 'Бэлтгэл 25с · Ярих 40с' },
     { k: 'rl', icon: '🎓', t: 'Retell Lecture', mn: 'Лекц сонсоод дахин ярих', w: 'Speaking + Listening', time: 'Бэлтгэл 10с · Ярих 40с' },
-    { k: 'asq', icon: '❓', t: 'Answer Short Question', mn: 'Богино асуултад 1-2 үгээр хариулах', w: 'Speaking + Listening', time: 'Ярих 10с' },
-    { k: 'rts', icon: '💬', t: 'Respond to a Situation', mn: 'Нөхцөл байдалд хариулах', w: 'Speaking + Listening', time: 'Бэлтгэл 20с · Ярих 40с' },
+    { k: 'asq', icon: '❓', t: 'Answer Short Question', mn: 'Богино асуултад 1-2 үгээр хариулах', w: 'Listening', time: 'Ярих 10с' },
+    { k: 'rts', icon: '💬', t: 'Respond to a Situation', mn: 'Нөхцөл байдалд хариулах', w: 'Speaking', time: 'Бэлтгэл 10с · Ярих 40с' },
     { k: 'wfd', icon: '✍️', t: 'Write From Dictation', mn: 'Сонссон өгүүлбэрээ бичих', w: 'Listening + Writing ⭐', time: '~1 мин' },
     { k: 'fib', icon: '🧩', t: 'Reading: Fill in the Blanks', mn: 'Зөв үгийг сонгох', w: 'Reading + Writing', time: '~2 мин' },
     { k: 'write', icon: '📝', t: 'Essay & Summarise (templates)', mn: 'Эссэ, хураангуйн загвар', w: 'Writing', time: '10–20 мин' },
@@ -445,10 +445,10 @@
     const i = next('rts', D.situations.length); const x = D.situations[i];
     root.innerHTML = header('rts', `<ul><li>Хэнтэй ярьж байгаагаа санаарай: <b>мэндчил → асуудлаа хэл → шалтгаан → санал/хүсэлт → талархал</b>.</li><li>Эелдэг хэллэг: <i>Sorry to bother you · Would you mind ...? · I'd really appreciate it.</i></li></ul>`) +
       `<div class="card passage">${esc(x.s)}<div class="mn">${esc(x.mn)}</div></div>${speakBtns(x.s)}
-       <div id="tm"></div><div class="row"><button class="btn" id="go">▶ Эхлэх (20с + 40с)</button>${nextBtn}</div><div id="mw"></div>
+       <div id="tm"></div><div class="row"><button class="btn" id="go">▶ Эхлэх (10с + 40с)</button>${nextBtn}</div><div id="mw"></div>
        <details><summary>⭐ Загвар хариулт</summary><div class="passage">${esc(x.model)}</div>${speakBtns(x.model)}</details>`;
     const m = micWidget($('#mw', root), { target: null, max: 40, label: 'Хариулах', onDone: (r) => { const n = words(r.text).length; r.el.insertAdjacentHTML('afterbegin', `<div class="score ${n >= 50 ? 'great' : n >= 30 ? 'good' : 'mid'}"><b>${n}</b> үг (зорилт 50+)</div>`); bump('rts'); logScore('rts', Math.min(100, n * 2)); } });
-    $('#go').onclick = async () => { $('#go').disabled = true; await countdown($('#tm', root), 20, 'Бэлтгэл', 'prep'); m.start(); };
+    $('#go').onclick = async () => { $('#go').disabled = true; await countdown($('#tm', root), 10, 'Бэлтгэл', 'prep'); m.start(); };
     $('#nx').onclick = () => V.pte(root, 'rts');
   };
   PTE.fib = (root) => {
@@ -484,13 +484,27 @@
   };
 
   // ----- Guide -----
+  const APPMAP = { 'Read Aloud': 'ra', 'Repeat Sentence': 'rs', 'Describe Image': 'di', 'Retell Lecture': 'rl', 'Answer Short Question': 'asq', 'Respond to a Situation': 'rts', 'Write From Dictation': 'wfd', 'Reading & Writing: Fill in the Blanks': 'fib', 'Summarize Written Text': 'write', 'Write Essay': 'write' };
   V.guide = (root) => {
     root.innerHTML = `<h1>📘 PTE 55 гарын авлага</h1>
       <div class="card"><h3>55 оноо гэж юу вэ?</h3><p>PTE Academic 10–90 оноотой. <b>55</b> бол дунд түвшин: энгийн сэдвээр ойлгогдохуйц ярьж, гол санааг сонсож ойлгох түвшин. Анхан шатнаас 3–6 сар өдөр бүр ~40 минут хичээллэвэл бодитой зорилт.</p>
         <p class="muted">Шалгалтын формат өөрчлөгдөж болно. Бүртгүүлэхээсээ өмнө <a href="https://www.pearsonpte.com/pte-academic" target="_blank" rel="noopener">pearsonpte.com</a> дээрээс шалгаарай. Визэнд шаардлагатай оноог homeaffairs.gov.au-аас шалга.</p></div>
+      <div class="card"><h3>📝 Шалгалт ямар хэлбэрээр явагддаг вэ?</h3><ul>
+        <li><b>Компьютер дээр</b>, Pearson-ий шалгалтын төвд өгнө. Микрофонтой чихэвч зүүж, бүх хэсгийг нэг дор өгнө.</li>
+        <li>Нийт <b>~2 цаг</b>. 3 хэсэгтэй: Ярих ба бичих → Унших → Сонсох. Нийт 22 төрлийн даалгавартай.</li>
+        <li>Яриаг <b>компьютер (AI)</b> бичиж авч үнэлдэг. Describe Image, Retell Lecture зэрэг даалгаврын агуулгыг хүн бас шалгадаг.</li>
+        <li>Оноо 10–90. Ярих, бичих, унших, сонсох тус бүрийн оноо болон нийт оноо гарна. Нэг даалгавар хэд хэдэн чадварт оноо өгдөг.</li>
+        <li>Ярих хэсэгт <b>3 секунд чимээгүй</b> байвал микрофон хаагдана. Тиймээс зогсолтгүй ярих хэрэгтэй.</li>
+        <li>Тус бүр нь өөрийн хугацаатай даалгаврууд бий. Унших, сонсох хэсгийн зарим даалгавар хугацаагаа хуваалцдаг тул цагаа өөрөө хянана.</li></ul>
+        <p class="muted">Австралийн визэнд шалгалтын төвд өгдөг PTE Academic-ийг хүлээн авдаг. Онлайн (гэрээсээ өгөх) хувилбарыг хүлээн авах эсэхийг homeaffairs.gov.au-аас шалгаарай. Энэ бүтцийг 2026-11-03-нд pearsonpte.com-оос шалгасан.</p></div>
+      <div class="card"><h3>🧱 Шалгалтын бүтэц ба хэсэг тус бүрийн стратеги</h3>
+        <p class="muted">Даалгавар дээр дарж стратегийг нээнэ. 🟢 = энэ апп-д дасгал бий.</p>
+        ${D.examParts.map((p) => `<h4 class="part">${p.name} <small class="muted">· ${p.mn} · ${p.time}</small></h4>
+          ${p.tasks.map((t) => { const k = APPMAP[t.t]; return `<details class="task"><summary>${k ? '🟢 ' : ''}<b>${t.t}</b> <small class="muted">· ${t.q} асуулт · ${t.time}</small></summary>
+            <p>${t.mn}</p><p><small class="tag2">${t.sk}</small></p><p>💡 ${esc(t.st)}</p>${k ? `<a class="btn sm" href="#/pte/${k}">Дасгал хийх ➡</a>` : ''}</details>`; }).join('')}`).join('')}</div>
       <div class="card"><h3>Хамгийн их нөлөөтэй даалгаврууд</h3><ol>
         <li><b>Repeat Sentence</b> — Speaking, Listening хоёуланд.</li><li><b>Write From Dictation</b> — Listening, Writing хоёуланд.</li>
-        <li><b>Read Aloud</b> — Speaking, Reading.</li><li><b>Describe Image / Retell Lecture</b> — загвар цээжилбэл амархан оноо.</li>
+        <li><b>Read Aloud</b> — Speaking (гөлгөр, дуудлага).</li><li><b>Describe Image / Retell Lecture</b> — загвар цээжилбэл амархан оноо.</li>
         <li><b>Reading Fill in the Blanks</b> — Reading, Writing.</li></ol>
         <p>💡 Эдгээрт <b>өдөр бүр</b> цаг зарцуул. Бусад даалгаварт загвар ашиглаад хурдан өнгөр.</p></div>
       <div class="card"><h3>12 долоо хоногийн төлөвлөгөө</h3><ol>
