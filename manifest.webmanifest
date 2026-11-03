@@ -1,0 +1,9 @@
+{
+  "name": "PTE 55 — Англи хэл",
+  "short_name": "PTE 55",
+  "start_url": "./#/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1d4ed8",
+  "icons": [{ "src": "img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
